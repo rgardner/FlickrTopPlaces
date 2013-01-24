@@ -1,5 +1,5 @@
 //
-//  FlickrTopPlacesSecondViewController.h
+//  FlickrPlacesTableViewController.h
 //  FlickrTopPlaces
 //
 //  Created by Bob Gardner on 1/23/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FlickrTopPlacesSecondViewController : UIViewController
+@interface FlickrPlacesTableViewController : UITableViewController
 
 @end
