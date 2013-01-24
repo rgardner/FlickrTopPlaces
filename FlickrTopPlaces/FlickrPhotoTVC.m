@@ -1,18 +1,18 @@
 //
-//  FlickrRecentPhotosTableViewController.m
+//  FlickrPhotoTVC.m
 //  FlickrTopPlaces
 //
-//  Created by Bob Gardner on 1/23/13.
+//  Created by Bob Gardner on 1/24/13.
 //  Copyright (c) 2013 edu.stanford.cs193p.rhg259. All rights reserved.
 //
 
-#import "FlickrRecentPhotosTableViewController.h"
+#import "FlickrPhotoTVC.h"
 
-@interface FlickrRecentPhotosTableViewController ()
+@interface FlickrPhotoTVC ()
 
 @end
 
-@implementation FlickrRecentPhotosTableViewController
+@implementation FlickrPhotoTVC
 
 - (id)initWithStyle:(UITableViewStyle)style
 {

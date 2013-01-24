@@ -7,12 +7,15 @@
 //
 
 #import "FlickrPlacesTableViewController.h"
+#import "FlickrFetcher.h"
 
 @interface FlickrPlacesTableViewController ()
-
+@property (strong, nonatomic) NSArray *topPlaces; // Top photo locations on Flickr
 @end
 
 @implementation FlickrPlacesTableViewController
+
+@synthesize topPlaces = _topPlaces;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //NSLog(@"%@", [[FlickrFetcher topPlaces] description]);
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -34,34 +38,48 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSArray *)topPlaces {
+    if (!_topPlaces) {
+        NSArray *unSortedPlaces = [FlickrFetcher topPlaces];
+        _topPlaces = [unSortedPlaces sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            NSString *first = [(NSDictionary*)a objectForKey:@"_content"];
+            NSString *second = [(NSDictionary*)b objectForKey:@"_content"];
+            return [first compare:second];
+        }];
+        
+    }
+    return _topPlaces;
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+//#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.topPlaces count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"Location Information";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
     
     // Configure the cell...
+    NSDictionary *place = [self.topPlaces objectAtIndex:indexPath.row];
+    NSString *location = [place objectForKey:@"_content"];
+    NSUInteger locationTitleSplit = [location rangeOfString:@","].location;
+    cell.textLabel.text = [location substringToIndex:locationTitleSplit];
+    cell.detailTextLabel.text = [location substringFromIndex:locationTitleSplit + 2];
     
     return cell;
 }
@@ -105,10 +123,11 @@
 }
 */
 
-#pragma mark - Table view delegate
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *location = [self.topPlaces objectAtIndex:indexPath.row];
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
