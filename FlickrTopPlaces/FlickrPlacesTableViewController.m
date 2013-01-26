@@ -8,14 +8,17 @@
 
 #import "FlickrPlacesTableViewController.h"
 #import "FlickrFetcher.h"
+#import "FlickrPhotoTVC.h"
 
 @interface FlickrPlacesTableViewController ()
 @property (strong, nonatomic) NSArray *topPlaces; // Top photo locations on Flickr
+@property (strong, nonatomic) NSDictionary *currentPlace;
 @end
 
 @implementation FlickrPlacesTableViewController
 
 @synthesize topPlaces = _topPlaces;
+@synthesize currentPlace = _currentPlace;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -29,7 +32,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //NSLog(@"%@", [[FlickrFetcher topPlaces] description]);
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -125,16 +127,15 @@
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSDictionary *location = [self.topPlaces objectAtIndex:indexPath.row];
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.currentPlace = [self.topPlaces objectAtIndex:indexPath.row];
+    [self performSegueWithIdentifier:@"showPhotosTable" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showPhotosTable"]) {
+        [segue.destinationViewController setPhotos:[FlickrFetcher photosInPlace:self.currentPlace maxResults:50]];
+    }
 }
 
 @end

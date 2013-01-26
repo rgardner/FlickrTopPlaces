@@ -7,12 +7,15 @@
 //
 
 #import "FlickrPhotoTVC.h"
+#import "FlickrFetcher.h"
 
 @interface FlickrPhotoTVC ()
 
 @end
 
 @implementation FlickrPhotoTVC
+
+@synthesize photos = _photos;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,7 +29,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -34,35 +36,36 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.photos count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"City Photo Information";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
     
     // Configure the cell...
-    
+    NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
+    NSString *title = [photo objectForKey:@"title"];
+    NSString *description = [photo valueForKeyPath:@"description._content"];
+    if ([title isEqualToString:@""]) {
+        if ([description isEqualToString:@""]) {
+            title = @"Unknown";
+        } else {
+            title = description;
+            description = @"";
+        }
+    }
+    cell.textLabel.text = title;
+    cell.detailTextLabel.text = description;
     return cell;
 }
 
@@ -105,7 +108,7 @@
 }
 */
 
-#pragma mark - Table view delegate
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

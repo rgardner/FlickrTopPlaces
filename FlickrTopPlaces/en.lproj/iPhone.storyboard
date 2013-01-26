@@ -133,9 +133,6 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <connections>
-                                    <segue destination="QrH-ES-Id2" kind="push" id="iTV-xf-YTd"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -144,6 +141,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Top Places" id="GzG-tx-7Tc"/>
+                    <connections>
+                        <segue destination="QrH-ES-Id2" kind="push" identifier="showPhotosTable" id="4lJ-Md-ehu"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I7P-vr-pM5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -178,9 +178,6 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <connections>
-                                    <segue destination="Ueq-OT-oSm" kind="push" id="Ooi-Vb-Hft"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -189,6 +186,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Popular Photos" id="Gqa-gF-nPs"/>
+                    <connections>
+                        <segue destination="Ueq-OT-oSm" kind="push" id="2MP-N4-hO0"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1FO-Ea-b30" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
