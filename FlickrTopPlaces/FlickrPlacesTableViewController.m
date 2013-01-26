@@ -8,7 +8,7 @@
 
 #import "FlickrPlacesTableViewController.h"
 #import "FlickrFetcher.h"
-#import "FlickrPhotoTVC.h"
+#import "FlickrRecentPhotosInCity.h"
 
 @interface FlickrPlacesTableViewController ()
 @property (strong, nonatomic) NSArray *topPlaces; // Top photo locations on Flickr
@@ -135,6 +135,12 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"showPhotosTable"]) {
         [segue.destinationViewController setPhotos:[FlickrFetcher photosInPlace:self.currentPlace maxResults:50]];
+        
+        // get the name of the city
+        NSString *location =[self.currentPlace objectForKey:@"_content"];
+        NSUInteger locationTitleSplit = [location rangeOfString:@","].location;
+        [segue.destinationViewController setCityName:[location substringToIndex:locationTitleSplit]];
+
     }
 }
 

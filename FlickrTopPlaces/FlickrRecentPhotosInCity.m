@@ -6,20 +6,23 @@
 //  Copyright (c) 2013 edu.stanford.cs193p.rhg259. All rights reserved.
 //
 
-#import "FlickrPhotoTVC.h"
+#import "FlickrRecentPhotosInCity.h"
 #import "FlickrFetcher.h"
 #import "FlickrPhotoViewController.h"
 
-@interface FlickrPhotoTVC ()
+@interface FlickrRecentPhotosInCity ()
 @property (nonatomic, strong) UIImage *selectedImage;
 @property (nonatomic, strong) NSString *selectedImageTitle;
+@property (nonatomic, strong) NSString *segueIdentifier;
 @end
 
-@implementation FlickrPhotoTVC
+@implementation FlickrRecentPhotosInCity
 
 @synthesize photos = _photos;
 @synthesize selectedImage = _selectedImage;
 @synthesize selectedImageTitle = _selectedImageTitle;
+@synthesize segueIdentifier = _segueIdentifier;
+@synthesize cityName = _cityName;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -33,12 +36,31 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"%@", self.photos.description);
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.segueIdentifier = @"Show photo from city";
+    self.navigationItem.title = self.cityName;
+}
+
+- (void)storePhotoInNSUserDefaults:(NSDictionary *)photo {
+    // store id, title, description, and url in NSUserDefaults
+    // create dict with photo info
+    NSArray *keys = @[@"id", @"title", @"description", @"url"];
+    NSArray *values = @[[photo objectForKey:@"id"], [photo objectForKey:@"title"], [photo objectForKey:@"description"], [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal]];
+    NSDictionary *photoInfo = [NSDictionary dictionaryWithObjects:keys forKeys:values];
+    
+    NSMutableArray *history = [[[NSUserDefaults standardUserDefaults] objectForKey:@"history"] mutableCopy];
+    
+    // removes photo from recent if previously seen
+    for (int i = 0;  i < history.count; i++) {
+        NSDictionary *recentPhoto = [history objectAtIndex:i];
+        if (![[recentPhoto objectForKey:@"id"] isEqualToString:[photoInfo objectForKey:@"id"]]) continue;
+        [history removeObjectAtIndex:i];
+        break;
+    }
+    
+    // add photo dictionary to the zero index of the array
+    [history insertObject:photoInfo atIndex:0];
+    [[NSUserDefaults standardUserDefaults] setObject:[history copy] forKey:@"history"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - UITableViewDataSource
@@ -74,57 +96,22 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // get title and image
     NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
     self.selectedImageTitle = [photo objectForKey:@"title"];
     self.selectedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal]]];
-    [self performSegueWithIdentifier:@"showPhoto" sender:self];
+    
+    [self storePhotoInNSUserDefaults:photo];
+    
+    [self performSegueWithIdentifier:@"Show photo from city" sender:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"showPhoto"]) {
+    if ([segue.identifier isEqualToString:self.segueIdentifier]) {
         [segue.destinationViewController setImageTitle:self.selectedImageTitle];
         [segue.destinationViewController setImage:self.selectedImage];
     }
