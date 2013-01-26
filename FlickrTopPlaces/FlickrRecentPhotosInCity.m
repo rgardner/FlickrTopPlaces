@@ -43,8 +43,8 @@
 - (void)storePhotoInNSUserDefaults:(NSDictionary *)photo {
     // store id, title, description, and url in NSUserDefaults
     // create dict with photo info
-    NSArray *keys = @[@"id", @"title", @"description", @"url"];
-    NSArray *values = @[[photo objectForKey:@"id"], [photo objectForKey:@"title"], [photo objectForKey:@"description"], [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal]];
+    NSArray *keys = @[@"id", @"title", @"description"];
+    NSArray *values = @[[photo objectForKey:@"id"], [photo objectForKey:@"title"], [photo objectForKey:@"description"]];
     NSDictionary *photoInfo = [NSDictionary dictionaryWithObjects:keys forKeys:values];
     
     NSMutableArray *history = [[[NSUserDefaults standardUserDefaults] objectForKey:@"history"] mutableCopy];
@@ -81,6 +81,13 @@
     
     // Configure the cell...
     NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
+    NSDictionary *photoTitleAndDescription = [self formatTitleAndDescriptionOfPhoto:photo];
+    cell.textLabel.text = [photoTitleAndDescription objectForKey:@"title"];
+    cell.detailTextLabel.text = [photoTitleAndDescription objectForKey:@"description"];
+    return cell;
+}
+
+- (NSDictionary *)formatTitleAndDescriptionOfPhoto:(NSDictionary *)photo {
     NSString *title = [photo objectForKey:@"title"];
     NSString *description = [photo valueForKeyPath:@"description._content"];
     if ([title isEqualToString:@""]) {
@@ -91,9 +98,7 @@
             description = @"";
         }
     }
-    cell.textLabel.text = title;
-    cell.detailTextLabel.text = description;
-    return cell;
+    return [NSDictionary dictionaryWithObjects:@[title, description] forKeys:@[@"title", @"description"]];
 }
 
 #pragma mark - UITableViewDelegate
@@ -102,7 +107,7 @@
 {
     // get title and image
     NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
-    self.selectedImageTitle = [photo objectForKey:@"title"];
+    self.selectedImageTitle = [[self formatTitleAndDescriptionOfPhoto:photo] objectForKey:@"title"];
     self.selectedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal]]];
     
     [self storePhotoInNSUserDefaults:photo];
