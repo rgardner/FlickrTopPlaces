@@ -8,14 +8,18 @@
 
 #import "FlickrPhotoTVC.h"
 #import "FlickrFetcher.h"
+#import "FlickrPhotoViewController.h"
 
 @interface FlickrPhotoTVC ()
-
+@property (nonatomic, strong) UIImage *selectedImage;
+@property (nonatomic, strong) NSString *selectedImageTitle;
 @end
 
 @implementation FlickrPhotoTVC
 
 @synthesize photos = _photos;
+@synthesize selectedImage = _selectedImage;
+@synthesize selectedImageTitle = _selectedImageTitle;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -29,6 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"%@", self.photos.description);
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -112,13 +117,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    NSDictionary *photo = [self.photos objectAtIndex:indexPath.row];
+    self.selectedImageTitle = [photo objectForKey:@"title"];
+    self.selectedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal]]];
+    [self performSegueWithIdentifier:@"showPhoto" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"showPhoto"]) {
+        [segue.destinationViewController setImageTitle:self.selectedImageTitle];
+        [segue.destinationViewController setImage:self.selectedImage];
+    }
 }
 
 @end

@@ -187,7 +187,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Popular Photos" id="Gqa-gF-nPs"/>
                     <connections>
-                        <segue destination="Ueq-OT-oSm" kind="push" id="2MP-N4-hO0"/>
+                        <segue destination="Ueq-OT-oSm" kind="push" identifier="showPhoto" id="2MP-N4-hO0"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1FO-Ea-b30" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -232,37 +232,44 @@
             </objects>
             <point key="canvasLocation" x="290" y="350"/>
         </scene>
-        <!--View Controller - Photo Name-->
+        <!--Flickr Photo View Controller - Photo Name-->
         <scene sceneID="UQl-UD-OdH">
             <objects>
-                <viewController id="Ueq-OT-oSm" sceneMemberID="viewController">
+                <viewController id="Ueq-OT-oSm" customClass="FlickrPhotoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6di-Jt-jCm">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HMU-5m-T8Y">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="HMU-5m-T8Y">
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KBh-Bo-pAz"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="KBh-Bo-pAz"/>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="KBh-Bo-pAz" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="2iH-Dd-D45"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="leading" secondItem="HMU-5m-T8Y" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="8cs-FE-svY"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="centerY" secondItem="HMU-5m-T8Y" secondAttribute="centerY" type="default" id="LOw-fE-Wfi"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="top" secondItem="HMU-5m-T8Y" secondAttribute="top" constant="20" symbolic="YES" type="default" id="OIG-SJ-MDa"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="centerX" secondItem="HMU-5m-T8Y" secondAttribute="centerX" type="default" id="dkz-81-i6k"/>
-                                    <constraint firstAttribute="bottom" secondItem="KBh-Bo-pAz" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="lbw-ID-f7Z"/>
+                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="top" secondItem="HMU-5m-T8Y" secondAttribute="top" type="default" id="C5S-0x-Bc3"/>
+                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="centerY" secondItem="HMU-5m-T8Y" secondAttribute="centerY" type="default" id="Hsc-Bq-ZJE"/>
+                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="centerX" secondItem="HMU-5m-T8Y" secondAttribute="centerX" type="default" id="LfM-KB-naS"/>
+                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="bottom" secondItem="HMU-5m-T8Y" secondAttribute="bottom" type="default" id="NbU-3i-qWL"/>
+                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="leading" secondItem="HMU-5m-T8Y" secondAttribute="leading" type="default" id="QNM-6R-Njg"/>
+                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="trailing" secondItem="HMU-5m-T8Y" secondAttribute="trailing" type="default" id="Uoz-iZ-Gdo"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="Ueq-OT-oSm" id="Cs4-Nx-KNk"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="leading" secondItem="6di-Jt-jCm" secondAttribute="leading" constant="-20" id="BR8-6Z-9xz"/>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="centerX" secondItem="6di-Jt-jCm" secondAttribute="centerX" type="default" id="IJj-NF-nWd"/>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="centerY" secondItem="6di-Jt-jCm" secondAttribute="centerY" type="default" id="xTO-c5-4rg"/>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="top" secondItem="6di-Jt-jCm" secondAttribute="top" constant="-20" id="yo7-Cf-owI"/>
+                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="leading" secondItem="6di-Jt-jCm" secondAttribute="leading" type="default" id="bAd-es-lzO"/>
+                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="top" secondItem="6di-Jt-jCm" secondAttribute="top" type="default" id="cta-gH-jsK"/>
+                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="bottom" secondItem="6di-Jt-jCm" secondAttribute="bottom" type="default" id="iT6-Lh-vK3"/>
+                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="trailing" secondItem="6di-Jt-jCm" secondAttribute="trailing" type="default" id="tSt-ML-EYb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Photo Name" id="oX8-ui-avt"/>
+                    <connections>
+                        <outlet property="imageView" destination="KBh-Bo-pAz" id="aOh-FL-rnp"/>
+                        <outlet property="scrollView" destination="HMU-5m-T8Y" id="xiJ-tm-1Vq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5X-Eb-BlK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -276,6 +283,13 @@
     <classes>
         <class className="FlickrPhotoTVC" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrPhotoTVC.h"/>
+        </class>
+        <class className="FlickrPhotoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrPhotoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
         </class>
         <class className="FlickrPlacesTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrPlacesTableViewController.h"/>
