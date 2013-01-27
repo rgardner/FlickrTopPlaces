@@ -14,15 +14,27 @@
 @property (nonatomic, strong) UIImage *selectedImage;
 @property (nonatomic, strong) NSString *selectedImageTitle;
 @property (nonatomic, strong) NSString *segueIdentifier;
+@property (nonatomic, strong) NSString *cellIdentifier;
 @end
 
 @implementation FlickrRecentPhotosInCity
 
 @synthesize photos = _photos;
+@synthesize cityName = _cityName;
 @synthesize selectedImage = _selectedImage;
 @synthesize selectedImageTitle = _selectedImageTitle;
 @synthesize segueIdentifier = _segueIdentifier;
-@synthesize cityName = _cityName;
+@synthesize cellIdentifier = _cellIdentifier;
+
+- (NSString *)cellIdentifier {
+    if (!_cellIdentifier) _cellIdentifier = @"City Photo Information";
+    return _cellIdentifier;
+}
+
+- (NSString *)segueIdentifier {
+    if (!_segueIdentifier) _segueIdentifier = @"Show photo from city";
+    return _segueIdentifier;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -36,7 +48,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.segueIdentifier = @"Show photo from city";
     self.navigationItem.title = self.cityName;
 }
 
@@ -73,7 +84,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"City Photo Information";
+    NSString *CellIdentifier = self.cellIdentifier;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
@@ -112,7 +123,7 @@
     
     [self storePhotoInNSUserDefaults:photo];
     
-    [self performSegueWithIdentifier:@"Show photo from city" sender:self];
+    [self performSegueWithIdentifier:self.segueIdentifier sender:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
