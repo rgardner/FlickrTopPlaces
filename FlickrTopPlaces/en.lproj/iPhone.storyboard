@@ -78,9 +78,9 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1T-b3-GOK">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="A1T-b3-GOK">
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Exv-s1-kvg"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Exv-s1-kvg"/>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Exv-s1-kvg" firstAttribute="leading" secondItem="A1T-b3-GOK" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="CMN-3V-I1W"/>
@@ -90,6 +90,9 @@
                                     <constraint firstAttribute="trailing" secondItem="Exv-s1-kvg" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="jg6-aK-YAk"/>
                                     <constraint firstItem="Exv-s1-kvg" firstAttribute="centerY" secondItem="A1T-b3-GOK" secondAttribute="centerY" type="default" id="sYZ-wa-1Fl"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="pRp-Ny-6a0" id="G0t-3u-RXK"/>
+                                </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

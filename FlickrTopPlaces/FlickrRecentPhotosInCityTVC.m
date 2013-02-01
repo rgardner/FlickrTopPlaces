@@ -68,7 +68,6 @@
     [history insertObject:photoInfo atIndex:0];
     [[NSUserDefaults standardUserDefaults] setObject:[history copy] forKey:@"history"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
 }
 
 #pragma mark - UITableViewDataSource

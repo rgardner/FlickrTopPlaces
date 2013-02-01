@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //[self clearNSUserDefaults];
     [self setPhotos:[[NSUserDefaults standardUserDefaults] arrayForKey:@"history"]];
     [self setSegueIdentifier:@"Show photo from Recently Viewed"];
     [self setShouldStorePhoto:NO];
@@ -38,6 +39,11 @@
     if ([newPhotos isEqualToArray:self.photos]) return;
     [self setPhotos:newPhotos];
     [self.tableView reloadData];
+}
+
+- (void)clearNSUserDefaults {
+    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
