@@ -6,30 +6,23 @@
 //  Copyright (c) 2013 edu.stanford.cs193p.rhg259. All rights reserved.
 //
 
-#import "FlickrRecentPhotosInCity.h"
+#import "FlickrRecentPhotosInCityTVC.h"
 #import "FlickrFetcher.h"
 #import "FlickrPhotoViewController.h"
 
-@interface FlickrRecentPhotosInCity ()
+@interface FlickrRecentPhotosInCityTVC ()
 @property (nonatomic, strong) UIImage *selectedImage;
 @property (nonatomic, strong) NSString *selectedImageTitle;
-@property (nonatomic, strong) NSString *segueIdentifier;
-@property (nonatomic, strong) NSString *cellIdentifier;
 @end
 
-@implementation FlickrRecentPhotosInCity
+@implementation FlickrRecentPhotosInCityTVC
 
 @synthesize photos = _photos;
 @synthesize cityName = _cityName;
+@synthesize segueIdentifier = _segueIdentifier;
+@synthesize shouldStorePhoto = _shouldStorePhoto;
 @synthesize selectedImage = _selectedImage;
 @synthesize selectedImageTitle = _selectedImageTitle;
-@synthesize segueIdentifier = _segueIdentifier;
-@synthesize cellIdentifier = _cellIdentifier;
-
-- (NSString *)cellIdentifier {
-    if (!_cellIdentifier) _cellIdentifier = @"City Photo Information";
-    return _cellIdentifier;
-}
 
 - (NSString *)segueIdentifier {
     if (!_segueIdentifier) _segueIdentifier = @"Show photo from city";
@@ -48,17 +41,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.shouldStorePhoto = YES;
     self.navigationItem.title = self.cityName;
 }
 
 - (void)storePhotoInNSUserDefaults:(NSDictionary *)photo {
     // store id, title, description, and url in NSUserDefaults
     // create dict with photo info
-    NSArray *keys = @[@"id", @"title", @"description"];
-    NSArray *values = @[[photo objectForKey:@"id"], [photo objectForKey:@"title"], [photo objectForKey:@"description"]];
-    NSDictionary *photoInfo = [NSDictionary dictionaryWithObjects:keys forKeys:values];
+    NSString *photoDescription = [photo valueForKeyPath:@"description._content"];
+
+    NSMutableDictionary *photoInfo = [[NSMutableDictionary alloc] initWithDictionary:photo];
+    [photoInfo setObject:photoDescription forKey:@"description"];
     
     NSMutableArray *history = [[[NSUserDefaults standardUserDefaults] objectForKey:@"history"] mutableCopy];
+    if (!history) history = [[NSMutableArray alloc] initWithObjects:photoInfo, nil];
     
     // removes photo from recent if previously seen
     for (int i = 0;  i < history.count; i++) {
@@ -72,6 +68,7 @@
     [history insertObject:photoInfo atIndex:0];
     [[NSUserDefaults standardUserDefaults] setObject:[history copy] forKey:@"history"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
 }
 
 #pragma mark - UITableViewDataSource
@@ -84,7 +81,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier = self.cellIdentifier;
+    static NSString *CellIdentifier = @"City Photo Information";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
@@ -101,6 +98,7 @@
 - (NSDictionary *)formatTitleAndDescriptionOfPhoto:(NSDictionary *)photo {
     NSString *title = [photo objectForKey:@"title"];
     NSString *description = [photo valueForKeyPath:@"description._content"];
+    if (!description) description = [photo valueForKey:@"description"];
     if ([title isEqualToString:@""]) {
         if ([description isEqualToString:@""]) {
             title = @"Unknown";
@@ -121,7 +119,7 @@
     self.selectedImageTitle = [[self formatTitleAndDescriptionOfPhoto:photo] objectForKey:@"title"];
     self.selectedImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal]]];
     
-    [self storePhotoInNSUserDefaults:photo];
+    if (self.shouldStorePhoto) [self storePhotoInNSUserDefaults:photo];
     
     [self performSegueWithIdentifier:self.segueIdentifier sender:self];
 }

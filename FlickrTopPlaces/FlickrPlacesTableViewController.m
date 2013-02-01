@@ -8,7 +8,7 @@
 
 #import "FlickrPlacesTableViewController.h"
 #import "FlickrFetcher.h"
-#import "FlickrRecentPhotosInCity.h"
+#import "FlickrRecentPhotosInCityTVC.h"
 
 @interface FlickrPlacesTableViewController ()
 @property (strong, nonatomic) NSArray *topPlaces; // Top photo locations on Flickr
