@@ -11,7 +11,7 @@
 #import "FlickrRecentPhotosInCityTVC.h"
 
 @interface FlickrPlacesTableViewController ()
-@property (strong, nonatomic) NSArray *topPlaces; // Top photo locations on Flickr
+@property (strong, nonatomic) NSArray *topPlaces;
 @property (strong, nonatomic) NSDictionary *currentPlace;
 @end
 
@@ -43,15 +43,71 @@
 - (NSArray *)topPlaces {
     if (!_topPlaces) {
         NSArray *unSortedPlaces = [FlickrFetcher topPlaces];
-        _topPlaces = [unSortedPlaces sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        NSArray *sortedPlaces = [unSortedPlaces sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
             NSString *first = [(NSDictionary*)a objectForKey:@"_content"];
             NSString *second = [(NSDictionary*)b objectForKey:@"_content"];
             return [first compare:second];
         }];
         
+        NSMutableArray *result = [[NSMutableArray alloc] init];
+        for (int i = 0; i < sortedPlaces.count; i++) {
+            NSDictionary *place = [sortedPlaces objectAtIndex:i];
+            
+            NSString *country  = [self getCountryNameForPlace:place];
+            NSLog(@"%@", country);
+            NSMutableArray *placesInCountry;
+            for (int j = 0; j < result.count; j++) {
+                NSArray *currentArray = [result objectAtIndex:j];
+                if ([country isEqualToString:[self getCountryNameForPlace:[currentArray objectAtIndex:0]]]) {
+                    placesInCountry = [[result objectAtIndex:j] mutableCopy];
+                    [result removeObjectAtIndex:j];
+                }
+            }
+            if (!placesInCountry) placesInCountry = [[NSMutableArray alloc] init];
+            [placesInCountry addObject:place];
+            [result addObject:placesInCountry];
+        }
+        
+        NSArray *sortedResult = [result sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            NSString *first = [self getCountryNameForPlace:(NSDictionary*)[(NSArray*)a objectAtIndex:0]];
+            NSString *second = [self getCountryNameForPlace:(NSDictionary*)[(NSArray*)b objectAtIndex:0]];
+            return [first compare:second];
+        }];
+        
+        NSLog(@"%@",sortedResult);
+        _topPlaces = sortedResult;
+
     }
     return _topPlaces;
 }
+
+- (NSString *)getCountryNameForPlace:(NSDictionary *)place {
+    NSString *location = [place objectForKey:@"_content"];
+    NSUInteger locationTitleSplit = [location rangeOfString:@"," options:NSBackwardsSearch].location;
+    return [location substringFromIndex:locationTitleSplit + 2];
+}
+
+- (NSString *)getStateForPlace:(NSDictionary *)place {
+    NSString *location = [place objectForKey:@"_content"];
+    
+    // determine number of commas, if fewer than three, return "", else return state
+    NSUInteger count = 0, length = [location length];
+    NSRange range = NSMakeRange(0, length);
+    while (range.location != NSNotFound) {
+        range = [location rangeOfString:@"," options:0 range:range];
+        if (range.location != NSNotFound) {
+            range = NSMakeRange(range.location + range.length, length - (range.location + range.length));
+            count++;
+        }
+    }
+    if (count == 1) return @"";
+    NSUInteger startIndex = [location rangeOfString:@","].location;
+    NSUInteger endIndex = [location rangeOfString:@"," options:NSBackwardsSearch].location;
+    
+    return [location substringWithRange:NSMakeRange(startIndex + 2, endIndex - startIndex - 2)];
+    
+}
+
 
 #pragma mark - UITableViewDataSource
 
@@ -59,13 +115,14 @@
 {
 //#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 1;
+    return self.topPlaces.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.topPlaces count];
+    NSArray *currentArray = [self.topPlaces objectAtIndex:section];
+    return currentArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -77,58 +134,28 @@
     }
     
     // Configure the cell...
-    NSDictionary *place = [self.topPlaces objectAtIndex:indexPath.row];
+    NSArray *currentCountry = [self.topPlaces objectAtIndex:indexPath.section];
+    NSDictionary *place = [currentCountry objectAtIndex:indexPath.row];
+    
     NSString *location = [place objectForKey:@"_content"];
-    NSUInteger locationTitleSplit = [location rangeOfString:@","].location;
-    cell.textLabel.text = [location substringToIndex:locationTitleSplit];
-    cell.detailTextLabel.text = [location substringFromIndex:locationTitleSplit + 2];
+    NSUInteger startIndex = [location rangeOfString:@","].location;
+    
+    cell.textLabel.text = [location substringToIndex:startIndex];
+    cell.detailTextLabel.text = [self getStateForPlace:place];
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSArray *currentCountry = [self.topPlaces objectAtIndex:section];
+    return [self getCountryNameForPlace:[currentCountry objectAtIndex:0]];
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.currentPlace = [self.topPlaces objectAtIndex:indexPath.row];
+    NSArray *currentCountry = [self.topPlaces objectAtIndex:indexPath.section];
+    self.currentPlace = [currentCountry objectAtIndex:indexPath.row];
     [self performSegueWithIdentifier:@"showPhotosTable" sender:self];
 }
 
