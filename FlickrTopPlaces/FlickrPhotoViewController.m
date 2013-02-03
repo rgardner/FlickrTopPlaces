@@ -19,14 +19,26 @@
 @synthesize image = _image;
 @synthesize imageTitle = _imageTitle;
 
-// TODO: Perform geometry calculations on the scrollView's bounds and the image's size
-// FIX: UIScrollView doesn't scroll when initialized
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = self.imageTitle;
     self.imageView.image = self.image;
+
     self.scrollView.contentSize = self.imageView.image.size;
     self.imageView.frame = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
+    
+    self.navigationItem.title = self.imageTitle;
+}
+
+- (void)viewWillLayoutSubviews {
+    float widthRatio = self.view.bounds.size.width / self.imageView.image.size.width;
+    
+    float heightRatio = self.view.bounds.size.height / self.imageView.image.size.height;
+    
+    self.scrollView.zoomScale = MAX(widthRatio, heightRatio);
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self.scrollView flashScrollIndicators];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {

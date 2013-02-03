@@ -63,7 +63,6 @@
 }
 
 - (NSDictionary *)formatTitleAndDescriptionOfPhoto:(NSDictionary *)photo {
-    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
     NSString *title = [photo objectForKey:@"title"];
     NSString *description = [photo objectForKey:@"description"];
     if ([title isEqualToString:@""]) {

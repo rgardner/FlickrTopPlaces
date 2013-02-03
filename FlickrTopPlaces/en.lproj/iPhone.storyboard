@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C3006" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C3006" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="4">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
@@ -39,12 +39,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yke-kL-xLn">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yke-kL-xLn">
+                                            <rect key="frame" x="10" y="2" width="38" height="22"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zG6-sK-iSl">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zG6-sK-iSl">
+                                            <rect key="frame" x="10" y="24" width="47" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -63,55 +65,46 @@
                         <barButtonItem key="backBarButtonItem" title="Recent" id="jol-3A-Uzs"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="pRp-Ny-6a0" kind="push" identifier="Show photo from Recently Viewed" id="yzx-86-HlG"/>
+                        <segue destination="W9i-jQ-M2t" kind="push" identifier="Show photo from Recently Viewed" id="NJG-Lw-UvV"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wGx-fS-buc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="679" y="350"/>
         </scene>
-        <!--Flickr Photo View Controller - Photo Name-->
-        <scene sceneID="jy3-0p-n3T">
+        <!--Flickr Photo View Controller-->
+        <scene sceneID="lET-aT-Vay">
             <objects>
-                <viewController id="pRp-Ny-6a0" customClass="FlickrPhotoViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="7c3-QM-KCE">
+                <viewController id="W9i-jQ-M2t" customClass="FlickrPhotoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iOE-2i-I4I">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="A1T-b3-GOK">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="WJz-WL-DM5">
+                                <rect key="frame" x="-20" y="-20" width="360" height="407"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Exv-s1-kvg"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="TopLeft" id="T6J-6e-8ik">
+                                        <rect key="frame" x="20" y="20" width="320" height="367"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="Exv-s1-kvg" firstAttribute="leading" secondItem="A1T-b3-GOK" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="CMN-3V-I1W"/>
-                                    <constraint firstItem="Exv-s1-kvg" firstAttribute="centerX" secondItem="A1T-b3-GOK" secondAttribute="centerX" type="default" id="WIL-Of-Snt"/>
-                                    <constraint firstAttribute="bottom" secondItem="Exv-s1-kvg" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="XYE-Kd-NSQ"/>
-                                    <constraint firstItem="Exv-s1-kvg" firstAttribute="top" secondItem="A1T-b3-GOK" secondAttribute="top" constant="20" symbolic="YES" type="default" id="byC-PE-xVk"/>
-                                    <constraint firstAttribute="trailing" secondItem="Exv-s1-kvg" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="jg6-aK-YAk"/>
-                                    <constraint firstItem="Exv-s1-kvg" firstAttribute="centerY" secondItem="A1T-b3-GOK" secondAttribute="centerY" type="default" id="sYZ-wa-1Fl"/>
-                                </constraints>
                                 <connections>
-                                    <outlet property="delegate" destination="pRp-Ny-6a0" id="G0t-3u-RXK"/>
+                                    <outlet property="delegate" destination="W9i-jQ-M2t" id="apf-Nm-EHx"/>
                                 </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="A1T-b3-GOK" firstAttribute="centerY" secondItem="7c3-QM-KCE" secondAttribute="centerY" type="default" id="8n0-QS-Kpw"/>
-                            <constraint firstItem="A1T-b3-GOK" firstAttribute="centerX" secondItem="7c3-QM-KCE" secondAttribute="centerX" type="default" id="BHN-Or-5dL"/>
-                            <constraint firstItem="A1T-b3-GOK" firstAttribute="leading" secondItem="7c3-QM-KCE" secondAttribute="leading" constant="-20" id="a9J-QB-t7e"/>
-                            <constraint firstItem="A1T-b3-GOK" firstAttribute="top" secondItem="7c3-QM-KCE" secondAttribute="top" constant="-20" id="gHJ-zL-bpI"/>
-                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Photo Name" id="MpH-IQ-2bv"/>
+                    <navigationItem key="navigationItem" id="2lE-Qn-FoO"/>
                     <connections>
-                        <outlet property="imageView" destination="Exv-s1-kvg" id="e9c-QP-3pB"/>
-                        <outlet property="scrollView" destination="A1T-b3-GOK" id="DK3-b8-Kak"/>
+                        <outlet property="imageView" destination="T6J-6e-8ik" id="eP2-Re-gzb"/>
+                        <outlet property="scrollView" destination="WJz-WL-DM5" id="tUP-WS-nHK"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Bxf-hc-LVO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="REd-lW-l7F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1084" y="350"/>
+            <point key="canvasLocation" x="1084" y="357"/>
         </scene>
         <!--Flickr Places Table View Controller - Top Places-->
         <scene sceneID="CLL-I1-YM0">
@@ -129,12 +122,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7y1-qB-yMm">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7y1-qB-yMm">
+                                            <rect key="frame" x="10" y="2" width="38" height="22"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JKg-kA-MGs">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JKg-kA-MGs">
+                                            <rect key="frame" x="10" y="24" width="47" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -174,12 +169,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TEH-Va-6b9">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TEH-Va-6b9">
+                                            <rect key="frame" x="10" y="2" width="38" height="22"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ne-tS-YxF">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Ne-tS-YxF">
+                                            <rect key="frame" x="10" y="24" width="47" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -249,30 +246,21 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="HMU-5m-T8Y">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" id="HMU-5m-T8Y">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="KBh-Bo-pAz"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="TopLeft" id="KBh-Bo-pAz">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="top" secondItem="HMU-5m-T8Y" secondAttribute="top" type="default" id="C5S-0x-Bc3"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="centerY" secondItem="HMU-5m-T8Y" secondAttribute="centerY" type="default" id="Hsc-Bq-ZJE"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="centerX" secondItem="HMU-5m-T8Y" secondAttribute="centerX" type="default" id="LfM-KB-naS"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="bottom" secondItem="HMU-5m-T8Y" secondAttribute="bottom" type="default" id="NbU-3i-qWL"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="leading" secondItem="HMU-5m-T8Y" secondAttribute="leading" type="default" id="QNM-6R-Njg"/>
-                                    <constraint firstItem="KBh-Bo-pAz" firstAttribute="trailing" secondItem="HMU-5m-T8Y" secondAttribute="trailing" type="default" id="Uoz-iZ-Gdo"/>
-                                </constraints>
                                 <connections>
-                                    <outlet property="delegate" destination="Ueq-OT-oSm" id="Cs4-Nx-KNk"/>
+                                    <outlet property="delegate" destination="Ueq-OT-oSm" id="cMh-kI-P8a"/>
                                 </connections>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="leading" secondItem="6di-Jt-jCm" secondAttribute="leading" type="default" id="bAd-es-lzO"/>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="top" secondItem="6di-Jt-jCm" secondAttribute="top" type="default" id="cta-gH-jsK"/>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="bottom" secondItem="6di-Jt-jCm" secondAttribute="bottom" type="default" id="iT6-Lh-vK3"/>
-                            <constraint firstItem="HMU-5m-T8Y" firstAttribute="trailing" secondItem="6di-Jt-jCm" secondAttribute="trailing" type="default" id="tSt-ML-EYb"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Photo Name" id="oX8-ui-avt"/>
                     <connections>
@@ -305,9 +293,6 @@
         </class>
         <class className="FlickrRecentlyViewedPhotosTVC" superclassName="FlickrRecentPhotosInCityTVC">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrRecentlyViewedPhotosTVC.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
