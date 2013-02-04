@@ -24,6 +24,7 @@
 @synthesize selectedImage = _selectedImage;
 @synthesize selectedImageTitle = _selectedImageTitle;
 
+#define RECENT_PHOTOS @"history"
 - (NSString *)segueIdentifier {
     if (!_segueIdentifier) _segueIdentifier = @"Show photo from city";
     return _segueIdentifier;
@@ -48,25 +49,25 @@
 - (void)storePhotoInNSUserDefaults:(NSDictionary *)photo {
     // store id, title, description, and url in NSUserDefaults
     // create dict with photo info
-    NSString *photoDescription = [photo valueForKeyPath:@"description._content"];
+    NSString *photoDescription = [photo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
 
     NSMutableDictionary *photoInfo = [[NSMutableDictionary alloc] initWithDictionary:photo];
     [photoInfo setObject:photoDescription forKey:@"description"];
     
-    NSMutableArray *history = [[[NSUserDefaults standardUserDefaults] objectForKey:@"history"] mutableCopy];
+    NSMutableArray *history = [[[NSUserDefaults standardUserDefaults] objectForKey:RECENT_PHOTOS] mutableCopy];
     if (!history) history = [[NSMutableArray alloc] initWithObjects:photoInfo, nil];
     
     // removes photo from recent if previously seen
     for (int i = 0;  i < history.count; i++) {
         NSDictionary *recentPhoto = [history objectAtIndex:i];
-        if (![[recentPhoto objectForKey:@"id"] isEqualToString:[photoInfo objectForKey:@"id"]]) continue;
+        if (![[recentPhoto objectForKey:FLICKR_PHOTO_ID] isEqualToString:[photoInfo objectForKey:FLICKR_PHOTO_ID]]) continue;
         [history removeObjectAtIndex:i];
         break;
     }
     
     // add photo dictionary to the zero index of the array
     [history insertObject:photoInfo atIndex:0];
-    [[NSUserDefaults standardUserDefaults] setObject:[history copy] forKey:@"history"];
+    [[NSUserDefaults standardUserDefaults] setObject:[history copy] forKey:RECENT_PHOTOS];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -95,8 +96,8 @@
 }
 
 - (NSDictionary *)formatTitleAndDescriptionOfPhoto:(NSDictionary *)photo {
-    NSString *title = [photo objectForKey:@"title"];
-    NSString *description = [photo valueForKeyPath:@"description._content"];
+    NSString *title = [photo objectForKey:FLICKR_PHOTO_TITLE];
+    NSString *description = [photo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
     if (!description) description = [photo valueForKey:@"description"];
     if ([title isEqualToString:@""]) {
         if ([description isEqualToString:@""]) {

@@ -44,8 +44,8 @@
     if (!_topPlaces) {
         NSArray *unSortedPlaces = [FlickrFetcher topPlaces];
         NSArray *sortedPlaces = [unSortedPlaces sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-            NSString *first = [(NSDictionary*)a objectForKey:@"_content"];
-            NSString *second = [(NSDictionary*)b objectForKey:@"_content"];
+            NSString *first = [(NSDictionary*)a objectForKey:FLICKR_PLACE_NAME];
+            NSString *second = [(NSDictionary*)b objectForKey:FLICKR_PLACE_NAME];
             return [first compare:second];
         }];
         
@@ -82,13 +82,13 @@
 }
 
 - (NSString *)getCountryNameForPlace:(NSDictionary *)place {
-    NSString *location = [place objectForKey:@"_content"];
+    NSString *location = [place objectForKey:FLICKR_PLACE_NAME];
     NSUInteger locationTitleSplit = [location rangeOfString:@"," options:NSBackwardsSearch].location;
     return [location substringFromIndex:locationTitleSplit + 2];
 }
 
 - (NSString *)getStateForPlace:(NSDictionary *)place {
-    NSString *location = [place objectForKey:@"_content"];
+    NSString *location = [place objectForKey:FLICKR_PLACE_NAME];
     
     // determine number of commas, if fewer than three, return "", else return state
     NSUInteger count = 0, length = [location length];
@@ -137,7 +137,7 @@
     NSArray *currentCountry = [self.topPlaces objectAtIndex:indexPath.section];
     NSDictionary *place = [currentCountry objectAtIndex:indexPath.row];
     
-    NSString *location = [place objectForKey:@"_content"];
+    NSString *location = [place objectForKey:FLICKR_PLACE_NAME];
     NSUInteger startIndex = [location rangeOfString:@","].location;
     
     cell.textLabel.text = [location substringToIndex:startIndex];
@@ -164,7 +164,7 @@
         [segue.destinationViewController setPhotos:[FlickrFetcher photosInPlace:self.currentPlace maxResults:50]];
         
         // get the name of the city
-        NSString *location =[self.currentPlace objectForKey:@"_content"];
+        NSString *location =[self.currentPlace objectForKey:FLICKR_PLACE_NAME];
         NSUInteger locationTitleSplit = [location rangeOfString:@","].location;
         [segue.destinationViewController setCityName:[location substringToIndex:locationTitleSplit]];
 
